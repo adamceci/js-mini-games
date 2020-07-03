@@ -1,0 +1,38 @@
+#intro {
+	text-align: center;
+}
+
+#outcome {
+	height: 20px;
+}
+
+#board {
+	margin: auto;
+	width: 500px;
+	height: 500px;
+	display: flex;
+	flex-wrap: wrap;
+	border: 3px solid cadetblue;
+	background-color: lightgrey;
+	font-size: 20px;
+	text-align: center;
+	line-height: 50px;
+}
+
+#board div {
+	width: 50px;
+	height: 50px;
+}
+
+.checked {
+	background-color: rgb(99, 104, 109);
+}
+
+.flag {
+	background-color: rgb(231, 152, 4);
+}
+
+.failure {
+	background-color: rgb(235, 41, 41);
+	color: white;
+}
