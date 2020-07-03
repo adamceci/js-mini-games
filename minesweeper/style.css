@@ -1,3 +1,7 @@
+body {
+  text-align: center;
+}
+
 #intro {
 	text-align: center;
 }
@@ -8,8 +12,8 @@
 
 #board {
 	margin: auto;
-	width: 500px;
-	height: 500px;
+	width: 518px;
+	height: 518px;
 	display: flex;
 	flex-wrap: wrap;
 	border: 3px solid cadetblue;
@@ -22,10 +26,12 @@
 #board div {
 	width: 50px;
 	height: 50px;
+	/* border: 1px solid white; */
+	/* border-collapse: separate; */
 }
 
 .checked {
-	background-color: rgb(99, 104, 109);
+	background-color: rgb(161, 165, 168);
 }
 
 .flag {

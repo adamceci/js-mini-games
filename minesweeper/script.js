@@ -1,18 +1,25 @@
-// Number of mines : 12/16/21 - Easy/Intermediate/Expert
-// Start with 12
-
-const nCells = 100;
-const nRows = 10;
-const nCols = 10;
-const nMines = 12;
-let nFlags = 0;
-
-let isGameOver = false;
-
 document.addEventListener('DOMContentLoaded', () => {
+  // Number of mines : 12/16/21 - Easy/Intermediate/Expert
+  const difficulty = {
+    easy: 12,
+    medium: 16,
+    hard: 21
+  }
+  const nCells = 100;
+  const nRows = 10;
+  const nCols = 10;
+  const nMines = 12;
+  // const nMines = difficulty[getDifficulty()];
+  let nCorrectFlags = 0;
+  let isGameOver = false;
+
 	const board = document.getElementById('board');
-  const grid = Array();
   const outcome = document.getElementById('outcome');
+  const grid = Array();
+
+  function getDifficulty() {
+    let difficultyDiv = document.getElementById('ask-difficulty');
+  }
 
   function shuffle(array) {
     let currentIndex = nCells - 1;
@@ -40,15 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.addEventListener('contextmenu', function(e) {
         e.preventDefault();
         placeFlag(cell);
-      })
+      });
+    }
+
+    // add borders
+    for (let i = 0; i < nCells; i++) {
+      const firstCol = (i % nCols === 0);
+      const lastCol = (i % nCols === 9);
+      const firstRow = (i < 10);
+      const lastRow = (i > 89);
+      
+      if (!firstCol)
+        grid[i].style.borderLeft = '0.5px solid rgb(204, 204, 204)';
+      if (!lastCol)
+        grid[i].style.borderRight = '0.5px solid rgb(204, 204, 204)';
+      if (!firstRow)
+        grid[i].style.borderTop = '0.5px solid rgb(204, 204, 204)';
+      if (!lastRow)
+        grid[i].style.borderBottom = '0.5px solid rgb(204, 204, 204)';
     }
   }
 
   function fillNumbers() {
     for (let i = 0; i < nCells; i++) {
       let total = 0;
-      const firstCol = (i % 10 === 0);
-      const lastCol = (i % 10 === 9);
+      const firstCol = (i % nCols === 0);
+      const lastCol = (i % nCols === 9);
       const firstRow = (i < 10);
       const lastRow = (i > 89);
 
@@ -82,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function checkNeighbours(cell) {
     const i = parseInt(cell.id);
-    const firstCol = (i % 10 === 0);
-    const lastCol = (i % 10 === 9);
+    const firstCol = (i % nCols === 0);
+    const lastCol = (i % nCols === 9);
     const firstRow = (i < 10);
     const lastRow = (i > 89 && i < 100);
 
@@ -140,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
       let total = cell.getAttribute('data');
       if (total != 0) {
         cell.innerHTML = total;
-        // return;
       } else {
         checkNeighbours(cell);
       }
@@ -154,20 +177,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cell.classList.contains('flag')) {
       cell.classList.remove('flag');
       cell.innerHTML = '';
-      nFlags--;
+      if (cell.classList.contains('bomb'))
+        nCorrectFlags--;
       return;
     }
     cell.classList.add('flag');
     cell.innerHTML = '🚩';
-    nFlags++;
+
     // check for win (all flags placed on bombs)
-    let nCorrectFlags = 0;
-    grid.forEach(cell => {
-      if (cell.classList.contains('flag') && cell.classList.contains('bomb')) {
-        nCorrectFlags++;
-      }
-    });
-    if (nFlags === nMines && nMines === nCorrectFlags) {
+    if (cell.classList.contains('flag') && cell.classList.contains('bomb'))
+      nCorrectFlags++;
+    if (nMines === nCorrectFlags) {
       outcome.innerHTML = 'Congratulations! You win';
       isGameOver = true;
     }
